@@ -1,0 +1,9 @@
+.BuildControls{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: 1rem;
+    position: fixed;
+    inset: auto 0 auto auto;
+}

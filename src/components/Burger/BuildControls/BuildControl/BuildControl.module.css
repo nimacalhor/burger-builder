@@ -1,0 +1,14 @@
+.BuildControl {
+  margin-inline: 1rem;
+}
+
+.BuildControl .label {
+  margin-right: 0.5rem;
+}
+
+.BuildControl div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+}
