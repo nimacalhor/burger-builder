@@ -17,7 +17,7 @@ export default function Layout(props) {
             <SideDrawer closeSideDrawer={closeSideDrawer} show={showSidebar} />
             {/* main ________________________________________________________________________________
              */}
-            <main className='bg-dark text-light pt-5' style={{ height: "100vh", position: "relative" }}>
+            <main className='pt-5' style={{ height: "100vh", position: "relative" }}>
                 {props.children}
             </main>
         </>

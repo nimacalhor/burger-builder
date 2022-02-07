@@ -13,7 +13,7 @@ const buttons = [
 
 function BuildControls({ ingHandler, price, purchaseable, purchaseMod }) {
     return (
-        <div className={`bg-dark text-light mt-4 p-5`}>
+        <div className={`bg-light bg-gradient text-dark text-light mt-4 p-5`}>
             <ShowPrice price={price} />
             {
                 buttons.map(({ label, type }) =>
