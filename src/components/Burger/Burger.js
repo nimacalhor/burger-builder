@@ -6,6 +6,7 @@ import propTypes from 'prop-types'
 function Burger({ ingredients }) {
     // {salad : 2, ...} => [[salad, 2], ...]
     // [["salad", 2], ...] => [["salad","salad"], ...]
+    //  BUG  invalid array length 
     const ingredientsArr = Object.entries(ingredients).map(arr => [...Array(arr[1])].fill(arr[0]));
 
     let middleBreadOutput = <h3>im just a bread 😟🥖</h3>;
