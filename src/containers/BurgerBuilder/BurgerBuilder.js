@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import * as actionTypes from "../../store/actions"
+import * as actions from "../../store/actions/index";
+
 
 import Burger from "../../components/Burger/Burger"
 import BuildControls from '../../components/Burger/BuildControls/BuildControls'
@@ -15,7 +16,7 @@ function BurgerBuilder(props) {
     // state / data ________________________________________________________________________________
     const [purchaseable, setPurchaseable] = useState(false);
     const [purchasing, setPurchasing] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(!!(props.ingredients));
     const navigate = useNavigate();
 
     // Effect ________________________________________________________________________________
@@ -28,12 +29,12 @@ function BurgerBuilder(props) {
             return setPurchaseable(false);
         // else
         setPurchaseable(true)
-        // setLoading(true)
-        // axios.get("https://burger-builder-3c0ce-default-rtdb.firebaseio.com/ingredients.json")
-        //     .then(res => { setIngredients(res.data); setLoading(false) })
-        //     .catch(err => console.log(err));
 
     }, [props.totalPrice, props.ingredients])
+
+    useEffect(()=> {
+        props.initIngredients()
+    }, [])
 
     const changeIngredients = {
         removeAll() {
@@ -114,12 +115,14 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        addIngredient: (ing) => dispatch({ type: actionTypes.ADD_INGREDIENTS, ingredient: ing }),
-        removeIngredient: (ing) => dispatch({ type: actionTypes.REMOVE_INGREDIENTS, ingredient: ing }),
-        removeAllIngredient: () => dispatch({ type: actionTypes.REMOVE_ALL_INGREDIENTS }),
-        addPrice: (ing) => dispatch({ type: actionTypes.ADD_PRICE, ingredient: ing }),
-        reducePrice: (ing) => dispatch({ type: actionTypes.REDUCE_PRICE, ingredient: ing }),
-        resetPrice: () => dispatch({ type: actionTypes.RESET_PRICE })
+        addIngredient: (ing) => dispatch(actions.addIngredient(ing)),
+        removeIngredient: (ing) => dispatch(actions.removeIngredient(ing)),
+        removeAllIngredient: () => dispatch(actions.removeAllIngredient()),
+        initIngredients : () => dispatch(actions.initIngredients()),
+
+        addPrice: (ing) => dispatch(actions.addPrice(ing)),
+        reducePrice: (ing) => dispatch(actions.reducePrice(ing)),
+        resetPrice: () => dispatch(actions.resetPrice())
     }
 }
 

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
-import { useOutletContext } from "react-router-dom"
+import React, { useState, useEffect } from 'react';
+import { useOutletContext, useNavigate } from "react-router-dom"
+import { connect } from 'react-redux';
+import * as actions from "../../../store/actions/index"
 import axios from "../../../axios-order"
 
-function ContactData() {
+function ContactData(props) {
+    const navigate = useNavigate()
     const [ingredients, totalPrice] = useOutletContext()
-    const [posting, setPosting] = useState(false)
+    const { loading: posting } = props;
     const [inputValues, setInputValues] = useState({
         name: '',
         email: '',
@@ -23,15 +26,14 @@ function ContactData() {
 
     const orderHandler = function (e) {
         e.preventDefault();
-        setPosting(true);
-        const data = {...ingredients, ...inputValues, totalPrice}
-        axios.post("orders.json", data)
-            .then(() => setPosting(false))
-            .catch(err => {
-                setPosting(false);
-                alert(err.message)
-            })
+        const data = { ...ingredients, ...inputValues, totalPrice }
+        props.postOrder(data)
     }
+
+
+    useEffect(() => {
+        if (props.purchased) navigate("/")
+    })
 
     return (
         <div className='container mt-5'>
@@ -80,4 +82,13 @@ function ContactData() {
     );
 }
 
-export default ContactData;
+const mapStateToProps = state => ({
+    loading: state.purchase.loading,
+    purchased: state.purchase.purchased
+})
+
+const mapDispatchToProps = dispatch => ({
+    postOrder: () => dispatch(actions.postOrder())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

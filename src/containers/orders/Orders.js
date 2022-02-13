@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import axios from "../../axios-order"
+import { connect } from 'react-redux';
+import * as actions from "../../store/actions/index"
 import OrderCard from './orderCard/OrderCard'
 
-function Orders() {
+function Orders(props) {
 
-    const [orders, setOrders] = useState(null);
+    const { orders, loading, error, fetchOrders } = props
 
     useEffect(() => {
-        axios.get("orders.json")
-            .then(({ data }) => setOrders(Object.values(data)));
+        if(!orders.length) fetchOrders()
     }, [])
 
     return (
@@ -22,4 +22,14 @@ function Orders() {
     )
 }
 
-export default Orders
+const mapDispatchToProps = dispatch => ({
+    fetchOrders: () => dispatch(actions.fetchOrders())
+})
+
+const mapStateToProps = state => ({
+    orders: state.rdr.orders,
+    error: state.rdr.error,
+    loading: state.rdr.leading
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders)
